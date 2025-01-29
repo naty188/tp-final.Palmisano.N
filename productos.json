@@ -1,0 +1,138 @@
+[
+    {
+        "nombre": "Pintura cine-01",
+        "imagen": "./img/cine1.jpeg",
+        "categoria": "Pinturas cine",
+        "precio": 35000,
+        "id": 1,
+        "descuento": 10
+    },
+    {
+        "nombre": "Pintura cine-02",
+        "imagen": "./img/cine2.jpeg",
+        "categoria": "Pinturas cine",
+        "precio": 35000,
+        "id": 2,
+        "descuento": 15
+    },
+    {
+        "nombre": "Pintura cine-03",
+        "imagen": "./img/cine3.jpeg",
+        "categoria": "Pinturas cine",
+        "precio": 35000,
+        "id": 3,
+        "descuento": 5
+    },
+    {
+        "nombre": "Pintura ran-01",
+        "imagen": "./img/ran1.jpeg",
+        "categoria": "Pinturas ran",
+        "precio": 25000,
+        "id": 4,
+        "descuento": 20
+    },
+    {
+        "nombre": "Pintura ran-02",
+        "imagen": "./img/ran2.jpeg",
+        "categoria": "Pinturas ran",
+        "precio": 25000,
+        "id": 5,
+        "descuento": 0
+    },
+    {
+        "nombre": "Pintura ran-03",
+        "imagen": "./img/ran3.jpeg",
+        "categoria": "Pinturas ran",
+        "precio": 25000,
+        "id": 6,
+        "descuento": 10
+    },
+    {
+        "nombre": "Pintura ran-04",
+        "imagen": "./img/ran4.jpeg",
+        "categoria": "Pinturas ran",
+        "precio": 25000,
+        "id": 7,
+        "descuento": 25
+    },
+    {
+        "nombre": "Pintura ran-05",
+        "imagen": "./img/ran5.jpeg",
+        "categoria": "Pinturas ran",
+        "precio": 25000,
+        "id": 8,
+        "descuento": 0
+    },
+    {
+        "nombre": "Pintura ran-06",
+        "imagen": "./img/ran6.jpeg",
+        "categoria": "Pinturas ran",
+        "precio": 25000,
+        "id": 9,
+        "descuento": 5
+    },
+    {
+        "nombre": "Pintura ran-07",
+        "imagen": "./img/ran7.jpeg",
+        "categoria": "Pinturas ran",
+        "precio": 25000,
+        "id": 10,
+        "descuento": 10
+    },
+    {
+        "nombre": "Pintura ran-08",
+        "imagen": "./img/ran8.jpeg",
+        "categoria": "Pinturas ran",
+        "precio": 25000,
+        "id": 11,
+        "descuento": 0
+    },
+    {
+        "nombre": "Pintura ran-09",
+        "imagen": "./img/ran9.jpeg",
+        "categoria": "Pinturas ran",
+        "precio": 25000,
+        "id": 12,
+        "descuento": 15
+    },
+    {
+        "nombre": "Pintura ran-10",
+        "imagen": "./img/ran10.jpeg",
+        "categoria": "Pinturas ran",
+        "precio": 25000,
+        "id": 13,
+        "descuento": 10
+    },
+    {
+        "nombre": "Pintura ran-11",
+        "imagen": "./img/ran11.jpeg",
+        "categoria": "Pinturas ran",
+        "precio": 25000,
+        "id": 14,
+        "descuento": 20
+    },
+    {
+        "nombre": "Pintura ran-12",
+        "imagen": "./img/ran12.jpeg",
+        "categoria": "Pinturas ran",
+        "precio": 25000,
+        "id": 15,
+        "descuento": 5
+    },
+    {
+        "nombre": "Pintura ran-13",
+        "imagen": "./img/ran13.jpeg",
+        "categoria": "Pinturas ran",
+        "precio": 25000,
+        "id": 16,
+        "descuento": 10
+    },
+    {
+        "nombre": "Pintura ran-14",
+        "imagen": "./img/ran14.jpeg",
+        "categoria": "Pinturas ran",
+        "precio": 25000,
+        "id": 17,
+        "descuento": 0
+    }
+]

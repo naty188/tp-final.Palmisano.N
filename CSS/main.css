@@ -1,0 +1,361 @@
+@import url('https://fonts.googleapis.com/css2?family=Patrick+Hand+SC&family=Ubuntu:ital@0;1&display=swap');
+
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: sans-serif;
+}
+
+*::selection {
+    color: rgba(224, 172, 247, 0.385);
+}
+
+
+body {
+    background-color: #0a0909;
+
+
+}
+
+
+/* Estilo para el header/nav */
+header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 2rem;
+    background-color: #481555;
+    position: sticky;
+    top: 0;
+    z-index: 1000; /* el header esté siempre por encima de otros elementos */
+}
+
+h1 {
+    color: white;
+    padding: 1rem;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    margin-left: 50px;
+    font-size: 3rem;
+    margin-top: 30px;
+}
+
+h2 {
+    color: white;
+    padding: 3rem;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    margin-left: 5rem;
+}
+
+h3 {
+    color: white;
+    text-decoration: none; 
+    text-align: center; 
+    margin: 0 auto; 
+    padding: 0 auto;    
+    width: fit-content; 
+    font-size: 1.5rem;
+}
+
+
+a:hover {
+    text-decoration: underline; /* Esto es opcional si quieres que el enlace tenga subrayado al pasar el cursor */
+}
+
+
+.logo {
+    max-width: 10rem;
+    object-fit: cover;
+    max-height: 10rem;
+    width: 10rem;
+    height: 10rem;
+    position: relative;
+    animation: puff-in-br .7s cubic-bezier(.47,0.000,.745,.715) both;
+    transition-delay: 5s;
+}
+
+.nav-list {
+    display: flex;
+    list-style-type: none;
+    gap: 1rem;
+}
+
+.nav-list li a {
+    list-style-type: none;
+    text-decoration: none;
+    color: rgb(252, 250, 250);
+    font-size: 25px;
+}
+
+.abrir-menu,
+.cerrar-menu {
+    display: none;
+}
+
+.abrir-menu,
+.cerrar-menu:hover {
+    color: antiquewhite;
+}
+
+
+footer {
+    color: #fafafa;
+}
+
+
+#galeriaContainer {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); /* Asegura que los elementos se distribuyan correctamente */
+    gap: 15px;
+    padding: 20px;
+    
+}
+
+/* Estilo para cada producto */
+.producto-item {
+    position: relative;
+    text-align: center;
+    border-radius: 8px;
+    overflow: hidden;
+    background-color: #fff;
+    transition: all 0.3s ease;
+    
+}
+
+.producto-item img {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+    border-radius: 20px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    margin-top: 20px;
+    margin-right: 30px;
+}
+
+/* Efecto hover para aumentar el tamaño de la imagen */
+.producto-item img:hover {
+    transform: scale(1.1);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* Estilo para el carrito */
+.btnEliminarProducto{
+background-color: #39055a;
+border-radius:5px;
+font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+color:blanchedalmond;
+text-shadow: 3px #0a0909;
+padding: 3px 5px 3px 5px;
+margin-bottom: 15px;
+}
+
+
+.btnAgregarCarrito{
+background-color: #39055a;
+border-radius:5px;
+font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+color:blanchedalmond;
+text-shadow: 3px #0a0909;
+padding: 3px 5px 3px 5px;
+margin-bottom: 15px;
+}
+
+#totalCompra {
+color: #64238d;
+font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+margin-bottom: 10px;
+margin-left: 20px;
+margin-top: 20px;
+font-weight: bold; 
+font-size: 25px;
+
+}
+
+
+#carrito {
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+    padding: 15px;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 18px;
+    color: #333;
+    width: 220px;
+}
+
+/* Contador de productos en el carrito */
+#carrito span {
+    font-weight: bold;
+    color: #e74c3c;
+}
+
+/* Ajustes para la página de carrito */
+#contenedorCarrito {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); /* Usamos grid para productos */
+    gap: 20px;
+    padding: 20px;
+    
+}
+
+.producto-carrito {
+    text-align: center;
+    background-color: #fff;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.precio-original {
+    text-decoration: line-through;
+    color: rgb(15, 14, 14); 
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    margin-bottom: 5px;
+
+}
+
+.precio-con-descuento {
+    color: rgba(122, 10, 167, 0.629); 
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    margin-bottom: 5px;
+}
+
+.oculto{
+    display: none;
+}
+
+.producto-carrito img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.producto-carrito p {
+    color: #000000; 
+    margin: 10px 0;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+#buscador{
+    width: 250px;
+    height: 30px;
+    margin-top: 20px;
+    margin-left: 20px;
+    padding-left: 10px;
+    background-color: rgb(206, 153, 250);
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    font-weight:500;
+    color: #0a0909;
+}
+
+.contenedor {
+    display: flex;              /* Usamos flexbox para organizar los elementos */
+    justify-content: flex-end;  /* Alinea los elementos a la derecha */
+    align-items: center;        /* Centra los elementos verticalmente */
+    padding: 20px;   
+    margin-right: 80px;           /* Agrega algo de espacio dentro del contenedor */
+}
+
+
+
+#btnComprar{
+ color: #64238d;
+ font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+ margin-bottom: 10px;
+ margin-left: 20px;
+ margin-top: 20px;
+ margin-bottom: 20px;
+ font-weight: bold; 
+ font-size: 25px;
+ padding: 10px;
+ border-radius: 5px;
+}
+
+#btnComprar:hover{
+    background-color: #d495fb;
+}
+
+.whatsapp {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 40px;
+    height: 40px;
+    background-color: green;
+    color: #f5f5dc;
+    padding: 10px 20px;
+    margin-right: 10px;
+    border-radius: 5px;
+    text-decoration: none;
+    z-index: 9999;
+    background-image: url("../IMG/whatsapp-png-wazapp-logo-whats-whatsapp-logo-whatsapp-icon-2050-removebg-preview.png");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    cursor: pointer;
+    padding-bottom: 20px;
+  }
+  
+  
+  .whatsapp img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+  
+  .whatsapp:hover {
+    background-color: darkgreen;
+  }
+  
+
+@media screen and (max-width: 450px) {
+
+    .contenedor.productos {
+        display: grid;
+        grid-template-columns: repeat(2, 2fr);
+        gap: 20px;
+        padding: 40px;
+        color: #efe9e9;
+    }
+
+    
+    .nav {
+        display: flex;
+        flex-direction: column;
+        align-items: end;
+        gap: 1rem;
+        position: absolute;
+        top: 0;
+        right: 0;
+        background-color: #633480;
+        padding: 2rem;
+        box-shadow: 0 0 0 100vmax rgba(10, 10, 10, 0.514);
+        opacity: 0;
+        visibility: hidden;
+    }
+
+    .nav.visible {
+        opacity: 1;
+        visibility: visible;
+    }
+
+    .nav-list {
+        flex-direction: column;
+        align-items: end;
+    }
+
+    .nav-list li a {
+        color: #faf9fb;
+    }
+
+ 
+}
+

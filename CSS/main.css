@@ -60,7 +60,7 @@ h3 {
 
 
 a:hover {
-    text-decoration: underline; /* Esto es opcional si quieres que el enlace tenga subrayado al pasar el cursor */
+    text-decoration: underline; 
 }
 
 
@@ -106,7 +106,7 @@ footer {
 
 #galeriaContainer {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); /* Asegura que los elementos se distribuyan correctamente */
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); /* los elementos se distribuyen correctamente */
     gap: 15px;
     padding: 20px;
     
@@ -134,6 +134,7 @@ footer {
 }
 
 /* Efecto hover para aumentar el tamaño de la imagen */
+
 .producto-item img:hover {
     transform: scale(1.1);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
@@ -190,6 +191,7 @@ font-size: 25px;
 }
 
 /* Contador de productos en el carrito */
+
 #carrito span {
     font-weight: bold;
     color: #e74c3c;
@@ -198,7 +200,7 @@ font-size: 25px;
 /* Ajustes para la página de carrito */
 #contenedorCarrito {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); /* Usamos grid para productos */
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); /*grid para productos */
     gap: 20px;
     padding: 20px;
     
@@ -256,11 +258,11 @@ font-size: 25px;
 }
 
 .contenedor {
-    display: flex;              /* Usamos flexbox para organizar los elementos */
+    display: flex;              /* flexbox para organizar los elementos */
     justify-content: flex-end;  /* Alinea los elementos a la derecha */
     align-items: center;        /* Centra los elementos verticalmente */
     padding: 20px;   
-    margin-right: 80px;           /* Agrega algo de espacio dentro del contenedor */
+    margin-right: 80px;           /*Agrega algo de espacio dentro del contenedor */
 }
 
 

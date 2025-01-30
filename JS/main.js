@@ -10,6 +10,25 @@ const Producto = function (nombre, imagen, categoria, precio, id, descuento = 0)
 
 // Carrito almacenado en localStorage
 let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
+let tasaCambioUSD = 0;  // Variable para almacenar la tasa de cambio USD/ARS
+let tasaCambioCargada = false;  // Para verificar si la tasa de cambio está cargada
+
+// Función para obtener la tasa de cambio de USD a ARS
+const apiKey = '20d8ce191e3255568641ebb8'; 
+async function obtenerTasaCambio() {
+    const url = `https://v6.exchangerate-api.com/v6/${apiKey}/latest/USD`;
+
+    try {
+        const response = await fetch(url);
+        const data = await response.json();
+        tasaCambioUSD = data.conversion_rates.ARS;  // Guardamos la tasa de USD a ARS
+        tasaCambioCargada = true;  // Marcamos que la tasa está cargada
+        console.log(`Tasa de cambio obtenida: 1 USD = ${tasaCambioUSD} ARS`);
+    } catch (error) {
+        console.error('Error al obtener la tasa de cambio:', error);
+        tasaCambioCargada = false;
+    }
+}
 
 // Función para calcular el precio con descuento
 function precioConDescuento(precio, descuento) {
@@ -20,45 +39,48 @@ function precioConDescuento(precio, descuento) {
 function actualizarContadorCarrito() {
     const contadorCarrito = document.getElementById('contadorCarrito');
     if (contadorCarrito) {
-        // Obtener el carrito desde localStorage en vez de utilizar la variable global 'carrito'
         const carritoGuardado = JSON.parse(localStorage.getItem('carrito')) || [];
-        contadorCarrito.textContent = carritoGuardado.length; // Actualiza el contador con el número de productos en el carrito
+        contadorCarrito.textContent = carritoGuardado.length;
     }
 }
 
 // Función para cargar los productos desde el archivo JSON
 function cargarProductos() {
-    fetch('./productos.json')  // Ruta del archivo JSON
-        .then(response => response.json())  // Convertir la respuesta a JSON
+    fetch('./productos.json')
+        .then(response => response.json())
         .then(data => {
-            lista = data;  // Guardar los productos en la variable global 'lista'
-            mostrarProductos();  // Llamar a la función para mostrar los productos
+            lista = data;
+            mostrarProductos();
         })
         .catch(error => {
-            console.error('Error al cargar los productos:', error);  // Manejo de errores
+            console.error('Error al cargar los productos:', error);
         });
 }
 
 // Llamamos a la función cargarProductos cuando la página cargue
-window.onload = () => {
+window.onload = async () => {
+    await obtenerTasaCambio();  // Esperamos a que la tasa de cambio se cargue
     cargarProductos();
-    cargarCarrito();    // Cargar carrito al inicio de la página
-    actualizarContadorCarrito();  // Aseguramos que el contador se actualice al cargar la página
+    cargarCarrito();
+    actualizarContadorCarrito();
 };
 
-// Función para mostrar los productos
+// Función para mostrar los productos con el precio en ARS y USD
 function mostrarProductos() {
     const galeriaContainer = document.getElementById('galeriaContainer');
     galeriaContainer.innerHTML = ''; // Limpiar la galería antes de agregar productos
 
     lista.forEach(producto => {
+        const precioEnDolares = (producto.precio / tasaCambioUSD).toFixed(2);
+        const precioConDescuentoDolares = (precioConDescuento(producto.precio, producto.descuento) / tasaCambioUSD).toFixed(2);
+
         const div = document.createElement('div');
         div.classList.add('producto-item');
         div.innerHTML = `
             <img src="${producto.imagen}" alt="${producto.nombre}" class="producto-img">
             <p>${producto.nombre}</p>
-            <p class="precio"><span class="precio-original">Precio original: $${producto.precio}</span></p>
-            <p class="precio-con-descuento">Precio con descuento: $${precioConDescuento(producto.precio, producto.descuento)}</p>
+            <p class="precio"><span class="precio-original">Precio original: $${producto.precio} ARS / $${precioEnDolares} USD</span></p>
+            <p class="precio-con-descuento">Precio con descuento: $${precioConDescuento(producto.precio, producto.descuento)} ARS / $${precioConDescuentoDolares} USD</p>
             <button class="btnAgregarCarrito" data-id="${producto.id}">Agregar al carrito</button>
         `;
 
@@ -71,106 +93,103 @@ function mostrarProductos() {
         galeriaContainer.appendChild(div);
     });
 
-    // Llamar a la función actualizarContadorCarrito() cada vez que se carga la galería
     actualizarContadorCarrito();
 }
 
 // Función para agregar un producto al carrito
 function agregarAlCarrito(producto) {
-    // Obtenemos el carrito desde localStorage
     carrito = JSON.parse(localStorage.getItem('carrito')) || [];
-    carrito.push(producto);  // Agregar el producto al carrito
+    carrito.push(producto); 
 
-    // Guardar carrito actualizado en localStorage
     localStorage.setItem('carrito', JSON.stringify(carrito));
 
-    // Mostrar la notificación de que el producto ha sido agregado
     SweetAlert.fire({
         title: 'Producto agregado',
         icon: 'success',
-        iconColor:'darkviolet',
+        iconColor: 'darkviolet',
         text: 'El producto ha sido agregado al carrito.',
         confirmButtonText: 'Genial',
     });
 
-    // Actualizar el contador de productos en el carrito
     actualizarContadorCarrito();
-
-    // Actualizar el carrito
     cargarCarrito();
 }
 
 // Función para cargar el carrito desde localStorage y mostrar los productos en el carrito
 function cargarCarrito() {
-    // Recargamos el carrito desde localStorage
     carrito = JSON.parse(localStorage.getItem('carrito')) || [];
 
     const carritoContainer = document.getElementById('contenedorCarrito');
     const totalCompraContainer = document.getElementById('totalCompra');
-    carritoContainer.innerHTML = ''; // Limpiar el contenedor del carrito
+    carritoContainer.innerHTML = '';
 
-    // Si el carrito está vacío, mostrar un mensaje
     if (carrito.length === 0) {
         carritoContainer.innerHTML = '<p>Tu carrito está vacío.</p>';
-        totalCompraContainer.innerHTML = '<p>Total de la compra: $0</p>';
+        totalCompraContainer.innerHTML = '<p>Total de la compra: $0 ARS / $0 USD</p>';
     } else {
-        let totalCompra = 0;  // Inicializamos el total a 0
+        let totalCompra = 0;
+        let totalCompraUSD = 0;
 
         carrito.forEach(producto => {
+            const precioConDescuentoARS = parseFloat(precioConDescuento(producto.precio, producto.descuento));
+
+            // Verificamos si la tasa de cambio está cargada antes de calcular el precio en dólares
+            let precioConDescuentoUSD = 'Cargando...';
+            if (tasaCambioCargada && tasaCambioUSD > 0) {
+                precioConDescuentoUSD = (precioConDescuentoARS / tasaCambioUSD).toFixed(2);
+            }
+
             const divProducto = document.createElement('div');
             divProducto.classList.add('producto-carrito');
             divProducto.innerHTML = `
                 <img src="${producto.imagen}" alt="${producto.nombre}" class="producto-img">
                 <p>${producto.nombre}</p>
-                <p>Precio original: $${producto.precio}</p>
-                <p>Precio con descuento: $${precioConDescuento(producto.precio, producto.descuento)}</p>
+                <p>Precio original: $${producto.precio} ARS / $${(producto.precio / tasaCambioUSD).toFixed(2)} USD</p>
+                <p>Precio con descuento: $${precioConDescuentoARS} ARS / $${precioConDescuentoUSD} USD</p>
                 <button class="btnEliminarProducto" data-id="${producto.id}">Eliminar</button>
             `;
 
-            // Agregar evento de eliminar producto
-            const btnEliminar = divProducto.querySelector('.btnEliminarProducto');
-            btnEliminar.onclick = function () {
-                const productoId = parseInt(btnEliminar.getAttribute('data-id')); // Obtener el id del producto
-                eliminarProductoDelCarrito(productoId); // Eliminar producto por id
+            // Asociamos la eliminación del producto al botón
+            const btnEliminarProducto = divProducto.querySelector('.btnEliminarProducto');
+            btnEliminarProducto.onclick = function () {
+                eliminarProductoDelCarrito(producto.id);  // Eliminamos el producto con el ID
             };
 
-            // Agregar el precio con descuento al total
-            totalCompra += parseFloat(precioConDescuento(producto.precio, producto.descuento));
+            totalCompra += precioConDescuentoARS;
 
-            // Agregar el producto al contenedor
+            // Si la tasa de cambio está cargada, sumamos el precio en dólares
+            if (tasaCambioCargada && tasaCambioUSD > 0) {
+                totalCompraUSD += parseFloat(precioConDescuentoUSD);
+            }
+
             carritoContainer.appendChild(divProducto);
         });
 
-        // Actualizar el total de la compra
-        totalCompraContainer.innerHTML = `<p>Total de la compra: ${formatearPrecioConComas(totalCompra)}</p>`;
+        // Si la tasa de cambio está cargada, mostramos el total en dólares
+        let totalCompraUSDDisplay = 'Cargando...';
+        if (tasaCambioCargada && tasaCambioUSD > 0) {
+            totalCompraUSDDisplay = totalCompraUSD.toFixed(2);
+        }
+
+        totalCompraContainer.innerHTML = `<p>Total de la compra: $${formatearPrecioConComas(totalCompra)} ARS / $${totalCompraUSDDisplay} USD</p>`;
     }
 
-    // Actualizar el contador de productos del carrito cada vez que se carga el carrito
     actualizarContadorCarrito();
 }
 
 // Función para eliminar un producto del carrito
 function eliminarProductoDelCarrito(productoId) {
-    // Filtrar el producto a eliminar basándose en el ID
     carrito = carrito.filter(producto => producto.id !== productoId);
-
-    // Actualizar carrito en localStorage
     localStorage.setItem('carrito', JSON.stringify(carrito));
-
-    // Actualizar la vista del carrito
     cargarCarrito();
-
-    // Actualizar el contador del carrito
     actualizarContadorCarrito();
 
-    // Opcional: Mostrar mensaje de eliminación
     SweetAlert.fire({
         title: 'Producto eliminado',
         icon: 'warning',
-        iconColor:'darkviolet',
+        iconColor: 'darkviolet',
         text: 'El producto ha sido eliminado del carrito.',
         confirmButtonText: 'Genial',
-    
     });
 }
 
@@ -184,20 +203,19 @@ document.getElementById('buscador').addEventListener('input', filtrarProductos);
 
 // Función para filtrar productos según el texto ingresado
 function filtrarProductos(event) {
-    const textoBusqueda = event.target.value.toLowerCase(); // Obtener el texto ingresado
+    const textoBusqueda = event.target.value.toLowerCase();
     const productosFiltrados = lista.filter(producto => {
-        return producto.nombre.toLowerCase().includes(textoBusqueda) || 
+        return producto.nombre.toLowerCase().includes(textoBusqueda) ||
                producto.categoria.toLowerCase().includes(textoBusqueda);
     });
 
-    // Mostrar los productos filtrados
     mostrarProductosFiltrados(productosFiltrados);
 }
 
 // Función para mostrar los productos filtrados
 function mostrarProductosFiltrados(productos) {
     const galeriaContainer = document.getElementById('galeriaContainer');
-    galeriaContainer.innerHTML = ''; // Limpiar la galería antes de agregar los productos filtrados
+    galeriaContainer.innerHTML = ''; 
 
     productos.forEach(producto => {
         const div = document.createElement('div');
@@ -205,25 +223,23 @@ function mostrarProductosFiltrados(productos) {
         div.innerHTML = `
             <img src="${producto.imagen}" alt="${producto.nombre}" class="producto-img">
             <p>${producto.nombre}</p>
-            <p class="precio"><span class="precio-original">Precio original: $${producto.precio}</span></p>
-            <p class="precio-con-descuento">Precio con descuento: $${precioConDescuento(producto.precio, producto.descuento)}</p>
+            <p class="precio"><span class="precio-original">Precio original: $${producto.precio} ARS</span></p>
+            <p class="precio-con-descuento">Precio con descuento: $${precioConDescuento(producto.precio, producto.descuento)} ARS</p>
             <button class="btnAgregarCarrito" data-id="${producto.id}">Agregar al carrito</button>
         `;
 
-        // Evento para agregar al carrito
         const btnAgregarCarrito = div.querySelector('.btnAgregarCarrito');
         btnAgregarCarrito.onclick = function () {
-            agregarAlCarrito(producto);  // Agregar el producto al carrito
+            agregarAlCarrito(producto);  
         };
 
         galeriaContainer.appendChild(div);
     });
 
-    // Llamar a la función actualizarContadorCarrito() cada vez que se carga la galería
     actualizarContadorCarrito();
 }
 
 // Cargar productos y carrito al inicio
 cargarProductos();
-cargarCarrito();  // Aseguramos que el carrito se cargue correctamente al iniciar la página
-actualizarContadorCarrito(); // Asegurarnos de que el contador se actualice correctamente al iniciar
+cargarCarrito();  
+actualizarContadorCarrito();
